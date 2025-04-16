@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 
+
 def unpack_data(input_dir, output_file):
     """
     Unpacks and combines multiple CSV files from a directory into a single CSV file.
@@ -9,22 +10,17 @@ def unpack_data(input_dir, output_file):
     input_dir (str): Path to the directory containing the CSV files.
     output_file (str): Path to the output combined CSV file.
     """
-
-    # Step 1: Initialize an empty list to store DataFrames
-
-    # Step 2: Loop over files in the input directory
-
-        # Step 3: Check if the file is a CSV or matches a naming pattern
-
-        # Step 4: Read the CSV file using pandas
-
-        # Step 5: Append the DataFrame to the list
-
-    # Step 6: Concatenate all DataFrames
-
-    # Step 7: Save the combined DataFrame to output_file
-
-    pass
+    data_frames = []
+    for file_name in os.listdir(input_dir):
+        if file_name.endswith('.csv') or 'data-' in file_name:
+            file_path = os.path.join(input_dir, file_name)
+            data = pd.read_csv(
+                file_path,
+                names=['sequence', 'family_accession', 'sequence_name', 'aligned_sequence', 'family_id']
+            )
+            data_frames.append(data)
+    combined_data = pd.concat(data_frames, ignore_index=True)
+    combined_data.to_csv(output_file, index=False)
 
 
 if __name__ == "__main__":
